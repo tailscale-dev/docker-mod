@@ -1,0 +1,39 @@
+#!/usr/bin/with-contenv bash
+
+FLAGS=""
+
+# configure `tailscale up`
+if ! [ -v TAILSCALE_AUTHKEY ]; then
+    echo '[!] TAILSCALE_AUTHKEY is not defined, this will print a login URL to the screen'
+else
+    FLAGS="${FLAGS} --authkey=${TAILSCALE_AUTHKEY}"
+fi
+
+if [ -v TAILSCALE_HOSTNAME ]; then
+    FLAGS="${FLAGS} --hostname=${TAILSCALE_HOSTNAME}"
+fi
+
+if [ -v TAILSCALE_USE_SSH ]; then
+    FLAGS="${FLAGS} --ssh=${TAILSCALE_USE_SSH}"
+fi
+
+if [ -v TAILSCALE_BE_EXIT_NODE ]; then
+    echo '[!] acting as an exit node, you may need to approve this in the admin console'
+    FLAGS="${FLAGS} --advertise-exit-node=${TS_BE_EXIT_NODE}"
+fi
+
+tailscale up $FLAGS
+
+# configure serve
+if [ -v TAILSCALE_SERVE_PORT ] && [ -v TAILSCALE_SERVE_MODE ]; then
+    tailscale serve "${TAILSCALE_SERVE_MODE}":443 / http://localhost:"${TAILSCALE_SERVE_PORT}"
+fi
+
+# configure funnel
+if [ -v TAILSCALE_FUNNEL ]; then
+    tailscale funnel 443 on
+fi
+
+
+
+

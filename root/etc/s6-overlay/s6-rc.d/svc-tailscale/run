@@ -1,0 +1,20 @@
+#!/usr/bin/with-contenv bash
+
+FLAGS=""
+
+if ! [ -e /dev/net/tun ]; then
+    FLAGS="$flags --tun=userspace-networking"
+fi
+
+if [ -v TAILSCALE_STATE_DIR ]; then
+    FLAGS="$FLAGS --statedir=${TAILSCALE_STATE_DIR}"
+else
+    echo '[!] TAILSCALE_STATE_DIR is not set, this node will be ephemeral.'
+    FLAGS="$FLAGS --state=mem:"
+fi
+
+if ! [ -v TAILSCALE_TAILSCALED_LOG ]; then
+    tailscaled $FLAGS 2>&1 > /dev/null
+else
+    tailscaled $FLAGS
+fi

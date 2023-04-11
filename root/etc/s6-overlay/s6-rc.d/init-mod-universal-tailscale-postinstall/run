@@ -1,0 +1,20 @@
+#!/usr/bin/with-contenv bash
+
+set -euo pipefail
+
+dir="$(mktemp -d)"
+pushd .
+cd "${dir}"
+
+tarball="$(curl 'https://pkgs.tailscale.com/stable/?mode=json' | jq -r .Tarballs.amd64)"
+version="$(echo ${tarball} | cut -d_ -f2)"
+
+curl "https://pkgs.tailscale.com/stable/${tarball}" -o tailscale.tgz
+
+tar xzf tailscale.tgz
+
+cp -vrf "tailscale_${version}_amd64"/tailscale /usr/bin/tailscale
+cp -vrf "tailscale_${version}_amd64"/tailscaled /usr/sbin/tailscaled
+
+popd
+rm -rf "${dir}"

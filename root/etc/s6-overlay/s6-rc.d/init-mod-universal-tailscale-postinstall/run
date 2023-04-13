@@ -21,6 +21,7 @@ case `uname -m` in
         ;;
     *)
         echo "Unknown CPU type $(uname -m), please file a bug at https://github.com/tailscale-dev/docker-mod"
+        ;;
 esac
 
 tarball="$(curl 'https://pkgs.tailscale.com/stable/?mode=json' | jq -r .Tarballs.${GOARCH})"

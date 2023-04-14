@@ -26,7 +26,11 @@ tailscale up $FLAGS
 
 # configure serve
 if [ -v TAILSCALE_SERVE_PORT ] && [ -v TAILSCALE_SERVE_MODE ]; then
-    tailscale serve "${TAILSCALE_SERVE_MODE}":443 / http://localhost:"${TAILSCALE_SERVE_PORT}"
+    if [[ $TAILSCALE_SERVE_MODE == "https" ]]; then
+        tailscale serve "${TAILSCALE_SERVE_MODE}":443 / http://localhost:"${TAILSCALE_SERVE_PORT}"
+    else
+        tailscale serve "${TAILSCALE_SERVE_MODE}":443 http://localhost:"${TAILSCALE_SERVE_PORT}"
+    fi
 fi
 
 # configure funnel

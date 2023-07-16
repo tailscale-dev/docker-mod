@@ -23,7 +23,7 @@ if [ -v TAILSCALE_BE_EXIT_NODE ]; then
 fi
 
 if [ -v TAILSCALE_CUSTOM_SERVER ]; then
-    echo '[!] Using a custom login server: ${TAILSCALE_CUSTOM_SERVER}'
+    echo '[!] Using a custom login server'
     FLAGS="${FLAGS} --login-server=${TAILSCALE_CUSTOM_SERVER}"
 fi
 

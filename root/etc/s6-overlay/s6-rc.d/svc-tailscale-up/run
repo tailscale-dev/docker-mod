@@ -17,9 +17,13 @@ if [ -v TAILSCALE_USE_SSH ]; then
     FLAGS="${FLAGS} --ssh=${TAILSCALE_USE_SSH}"
 fi
 
-if [ -v TAILSCALE_BE_EXIT_NODE ]; then
+if [ TAILSCALE_BE_EXIT_NODE = "true" ]; then
     echo '[!] acting as an exit node, you may need to approve this in the admin console'
-    FLAGS="${FLAGS} --advertise-exit-node=${TS_BE_EXIT_NODE}"
+    FLAGS="${FLAGS} --advertise-exit-node"
+fi
+
+if [ -z TAILSCALE_USE_EXIT_NODE ]; then
+    FLAGS="${FLAGS} --exit-node=${TAILSCALE_USE_EXIT_NODE}"
 fi
 
 tailscale up $FLAGS

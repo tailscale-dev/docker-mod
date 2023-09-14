@@ -22,6 +22,16 @@ if [ -v TAILSCALE_BE_EXIT_NODE ]; then
     FLAGS="${FLAGS} --advertise-exit-node=${TS_BE_EXIT_NODE}"
 fi
 
+if [ -v TAILSCALE_USE_EXIT_NODE ]; then
+    echo "[!] using ${TAILSCALE_USE_EXIT_NODE} as an exit node."
+    FLAGS="${FLAGS} --exit-node=${TAILSCALE_USE_EXIT_NODE}"
+
+    if [ -v TAILSCALE_EXIT_NODE_ALLOW_LAN_ACCESS ]; then
+        echo '[!] allowing exit node LAN access.'
+        FLAGS="${FLAGS} --exit-node-allow-lan-access=${TAILSCALE_EXIT_NODE_ALLOW_LAN_ACCESS}"
+    fi
+fi
+
 tailscale up $FLAGS
 
 # configure serve

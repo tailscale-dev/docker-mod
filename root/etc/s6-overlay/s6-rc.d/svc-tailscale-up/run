@@ -24,17 +24,20 @@ fi
 
 tailscale up $FLAGS
 
+
+# configure serving/funneling
+# endpoint exposed to network/public
+ENDPOINT="${TAILSCALE_SERVE_MODE}:${TAILSCALE_SERVE_PORT}"
+# target it connects to
+TARGET="${TAILSCALE_TARGET_MODE:=https}://localhost:${TAILSCALE_TARGET_PORT:=443}"
+
 # configure serve or funnel
 if [ -v TAILSCALE_SERVE_PORT ] && [ -v TAILSCALE_SERVE_MODE ]; then
 
     if [ -v TAILSCALE_FUNNEL ]; then
-        tailscale funnel --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
+        tailscale funnel --bg ${ENDPOINT} ${TARGET}
     else
-        tailscale serve --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
+        tailscale serve --bg ${ENDPOINT} ${TARGET}
     fi
     
 fi
-
-
-
-

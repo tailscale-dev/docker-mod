@@ -22,6 +22,19 @@ if [ -v TAILSCALE_BE_EXIT_NODE ]; then
     FLAGS="${FLAGS} --advertise-exit-node=${TS_BE_EXIT_NODE}"
 fi
 
+if [ -v TAILSCALE_EXIT_NODE ]; then
+    echo "[!] using ${TAILSCALE_EXIT_NODE} as an exit node."
+    FLAGS="${FLAGS} --exit-node=${TAILSCALE_EXIT_NODE}"
+
+    if [ "${TAILSCALE_EXIT_NODE_ALLOW_LAN_ACCESS}" = "true" ] ||
+        [ "${TAILSCALE_EXIT_NODE_ALLOW_LAN_ACCESS}" = "false" ]; then
+        echo "[!] configuring exit node LAN access to ${TAILSCALE_EXIT_NODE_ALLOW_LAN_ACCESS}"
+        FLAGS="${FLAGS} --exit-node-allow-lan-access=${TAILSCALE_EXIT_NODE_ALLOW_LAN_ACCESS}"
+    else
+        echo '[!] TAILSCALE_EXIT_NODE_ALLOW_LAN_ACCESS is not set to true or false. Skipping this setting.'
+    fi
+fi
+
 tailscale up $FLAGS
 
 # configure serve or funnel
@@ -34,7 +47,3 @@ if [ -v TAILSCALE_SERVE_PORT ] && [ -v TAILSCALE_SERVE_MODE ]; then
     fi
     
 fi
-
-
-
-

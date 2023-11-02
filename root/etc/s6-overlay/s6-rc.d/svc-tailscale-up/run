@@ -24,15 +24,17 @@ fi
 
 tailscale up $FLAGS
 
-# configure serve
+# configure serve or funnel
 if [ -v TAILSCALE_SERVE_PORT ] && [ -v TAILSCALE_SERVE_MODE ]; then
-    tailscale serve --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
+
+    if [ -v TAILSCALE_FUNNEL ]; then
+        tailscale funnel --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
+    else
+        tailscale serve --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
+    fi
+    
 fi
 
-# configure funnel
-if [ -v TAILSCALE_FUNNEL ]; then
-    tailscale funnel --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
-fi
 
 
 

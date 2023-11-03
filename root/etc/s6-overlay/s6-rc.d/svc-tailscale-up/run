@@ -17,6 +17,10 @@ if [ -v TAILSCALE_USE_SSH ]; then
     FLAGS="${FLAGS} --ssh=${TAILSCALE_USE_SSH}"
 fi
 
+if [ -v TAILSCALE_ACCEPT_ROUTES ]; then
+    FLAGS="${FLAGS} --accept-routes=${TAILSCALE_ACCEPT_ROUTES}"
+fi
+
 if [ -v TAILSCALE_BE_EXIT_NODE ]; then
     echo '[!] acting as an exit node, you may need to approve this in the admin console'
     FLAGS="${FLAGS} --advertise-exit-node=${TS_BE_EXIT_NODE}"

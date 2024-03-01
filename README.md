@@ -19,7 +19,7 @@ use to configure it.
 | `TAILSCALE_SERVE_PORT` | The port number that you want to expose on your tailnet. This will be the port of your DokuWiki, Transmission, or other container.                                                                                                                                                                            | `80`                                     |
 | `TAILSCALE_SERVE_MODE` | The mode you want to run Tailscale serving in. This should be `https` in most cases, but there may be times when you need to enable `tls-terminated-tcp` to deal with some weird edge cases like HTTP long-poll connections. See [here](https://tailscale.com/kb/1242/tailscale-serve/) for more information. | `https`                                  |
 | `TAILSCALE_FUNNEL`     | Set this to `true`, `1`, or `t` to enable [funnel](https://tailscale.com/kb/1243/funnel/). For more information about the accepted syntax, please read the [strconv.ParseBool documentation](https://pkg.go.dev/strconv#ParseBool) in the Go standard library.                                                | `on`                                     |
-| `TAILSCALE_CUSTOM_SERVER` | Set this value if you are using a custom login/control server (Such as headscale) | `https://headscale.example.com`
+| `TAILSCALE_LOGIN_SERVER` | Set this value if you are using a custom login/control server (Such as headscale) | `https://headscale.example.com`
 
 Something important to keep in mind is that you really should set up a
 separate volume for Tailscale state. Here is how to do that with the

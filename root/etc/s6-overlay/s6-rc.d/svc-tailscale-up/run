@@ -22,9 +22,9 @@ if [ -v TAILSCALE_BE_EXIT_NODE ]; then
     FLAGS="${FLAGS} --advertise-exit-node=${TS_BE_EXIT_NODE}"
 fi
 
-if [ -v TAILSCALE_CUSTOM_SERVER ]; then
+if [ -v TAILSCALE_LOGIN_SERVER ]; then
     echo '[!] Using a custom login server'
-    FLAGS="${FLAGS} --login-server=${TAILSCALE_CUSTOM_SERVER}"
+    FLAGS="${FLAGS} --login-server=${TAILSCALE_LOGIN_SERVER}"
 fi
 
 tailscale up $FLAGS

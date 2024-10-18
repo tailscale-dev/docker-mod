@@ -25,10 +25,10 @@ case `uname -m` in
         ;;
 esac
 
-tarball="$(curl 'https://pkgs.tailscale.com/stable/?mode=json' | jq -r .Tarballs.${GOARCH})"
+tarball="$(wget -qO- 'https://pkgs.tailscale.com/stable/?mode=json' | jq -r .Tarballs.${GOARCH})"
 version="$(echo ${tarball} | cut -d_ -f2)"
 
-curl "https://pkgs.tailscale.com/stable/${tarball}" -o tailscale.tgz
+wget "https://pkgs.tailscale.com/stable/${tarball}" -O tailscale.tgz
 
 tar xzf tailscale.tgz
 

@@ -4,6 +4,7 @@
 if [ -f /usr/bin/apt ]; then
     echo "\
         jq \
+        wget \
         iptables" >> /mod-repo-packages-to-install.list
 
 fi
@@ -11,5 +12,6 @@ fi
 if [ -f /sbin/apk ]; then
     echo "\
         jq \
+        wget \
         iptables" >> /mod-repo-packages-to-install.list
 fi

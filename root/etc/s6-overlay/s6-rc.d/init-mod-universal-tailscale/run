@@ -1,15 +1,19 @@
 #!/usr/bin/with-contenv bash
 
-## Ubuntu
-if [ -f /usr/bin/apt ]; then
-    echo "\
-        jq \
-        iptables" >> /mod-repo-packages-to-install.list
+if [ ! -f /usr/bin/curl ] || [ ! -f /usr/bin/jq ] || [ ! -f /usr/sbin/iptables ]; then
+    ## Ubuntu
+    if [ -f /usr/bin/apt ]; then
+        echo "\
+            curl \
+            jq \
+            nftables" >> /mod-repo-packages-to-install.list
 
-fi
-# Alpine
-if [ -f /sbin/apk ]; then
-    echo "\
-        jq \
-        iptables" >> /mod-repo-packages-to-install.list
+    fi
+    # Alpine
+    if [ -f /sbin/apk ]; then
+        echo "\
+            curl \
+            jq \
+            nftables" >> /mod-repo-packages-to-install.list
+    fi
 fi

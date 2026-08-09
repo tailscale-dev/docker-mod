@@ -1,0 +1,11 @@
+name: Build Image
+
+on:
+  release:
+    types: [published]
+  push:
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy
+    uses: chukysoria/workflows/.github/workflows/build-image-simple.yml@624bd5750a5e2f4ffc50b89977fd840b66c4f1c1 # v1.1.38

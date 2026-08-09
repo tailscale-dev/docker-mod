@@ -1,5 +1,5 @@
 # The Tailscale universal Docker mod
-
+ 
 This Docker mod lets you slipstream Tailscale into
 [linuxserver.io](https://linuxserver.io) containers. This lets you
 have applications join your tailnet.
@@ -11,7 +11,7 @@ use to configure it.
 
 | Environment Variable   | Description                                                                                                                                                                                                                                                                                                   | Example                                  |
 | :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------- |
-| `DOCKER_MODS`          | The list of additional mods to layer on top of the running container, separated by pipes.                                                                                                                                                                                                                     | `ghcr.io/tailscale-dev/docker-mod:main`  |
+| `DOCKER_MODS`          | The list of additional mods to layer on top of the running container, separated by pipes.                                                                                                                                                                                                                     | `chukysoria/docker-mod:main`  |
 | `TAILSCALE_STATE_DIR`  | The directory where the Tailscale state will be stored, this should be pointed to a Docker volume. If it is not, then the node will set itself as ephemeral, making the node disappear from your tailnet when the container exits.                                                                            | `/var/lib/tailscale`                     |
 | `TAILSCALE_AUTHKEY`    | The authkey for your tailnet. You can create one in the [admin panel](https://login.tailscale.com/admin/settings/keys). See [here](https://tailscale.com/kb/1085/auth-keys/) for more information about authkeys and what you can do with them.                                                               | `tskey-auth-hunter2CNTRL-hunter2hunter2` |
 | `TAILSCALE_HOSTNAME`   | The hostname that you want to set for the container. If you don't set this, the hostname of the node on your tailnet will be a bunch of random hexadecimal numbers, which many humans find hard to remember.                                                                                                  | `wiki`                                   |

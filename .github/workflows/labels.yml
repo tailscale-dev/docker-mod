@@ -1,0 +1,21 @@
+---
+   
+name: Sync labels
+            
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - .github/labels.yml
+  schedule:
+    - cron: "34 5 * * *"
+  workflow_dispatch:
+                                                                                            
+                                                                                                  
+jobs:
+  labels:
+    name: ♻️ Sync labels
+    uses: chukysoria/workflows/.github/workflows/labels.yml@624bd5750a5e2f4ffc50b89977fd840b66c4f1c1 # v1.1.38
+                                                                                                                            

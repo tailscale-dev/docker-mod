@@ -1,0 +1,14 @@
+name: 'Release Drafter'
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  update_release_draft:
+    name: Release
+    uses: chukysoria/workflows/.github/workflows/new-release.yml@624bd5750a5e2f4ffc50b89977fd840b66c4f1c1 # v1.1.38
+    with:
+      simple-build: true

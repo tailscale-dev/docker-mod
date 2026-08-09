@@ -1,0 +1,8 @@
+---
+image:  tailscale-mod
+version: v1.1.8
+name: TailscaleMod
+description: "Tailscale Mod Install Tailscale VPN within a container."
+ext_release: 1.1.0
+arch:
+  - all

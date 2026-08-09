@@ -1,0 +1,10 @@
+name: Permission check
+on:
+  pull_request_target:
+    paths:
+      - '**/run'
+      - '**/finish'
+      - '**/check'
+jobs:
+  permission_check:
+    uses: chukysoria/workflows/.github/workflows/init-svc-executable-permissions.yml@624bd5750a5e2f4ffc50b89977fd840b66c4f1c1 # v1.1.38

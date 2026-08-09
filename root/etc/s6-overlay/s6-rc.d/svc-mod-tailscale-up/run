@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-FLAGS=""
+FLAGS="--stateful-filtering"
 
 # configure `tailscale up`
 if ! [ -v TAILSCALE_AUTHKEY ]; then
@@ -29,15 +29,19 @@ fi
 
 tailscale up $FLAGS
 
-# configure serve or funnel
+# configure serve or funnel, or reset if not set/removed
 if [ -v TAILSCALE_SERVE_PORT ] && [ -v TAILSCALE_SERVE_MODE ]; then
 
     if [ -v TAILSCALE_FUNNEL ]; then
         tailscale funnel --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
     else
+        tailscale funnel reset
         tailscale serve --bg --"${TAILSCALE_SERVE_MODE}"=443 http://localhost:"${TAILSCALE_SERVE_PORT}"
     fi
-    
+
+else
+    tailscale serve reset
+    tailscale funnel reset 
 fi
 
 

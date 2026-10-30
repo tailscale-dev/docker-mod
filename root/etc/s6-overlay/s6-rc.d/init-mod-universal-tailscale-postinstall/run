@@ -2,6 +2,24 @@
 
 set -euo pipefail
 
+TAILSCALE_RELEASE_TRACK="${TAILSCALE_RELEASE_TRACK:-stable}"
+TAILSCALE_VERSION="${TAILSCALE_VERSION:-}"
+
+case "${TAILSCALE_RELEASE_TRACK}" in
+    stable|unstable|release-candidate)
+        ;;
+    *)
+        echo "Invalid TAILSCALE_RELEASE_TRACK: ${TAILSCALE_RELEASE_TRACK}. Expected stable, unstable, or release-candidate." >&2
+        exit 1
+        ;;
+esac
+
+# Keep the requested version within the selected track's package directory.
+if [[ -n "${TAILSCALE_VERSION}" && ! "${TAILSCALE_VERSION}" =~ ^[a-zA-Z0-9.+-]+$ ]]; then
+    echo "Invalid TAILSCALE_VERSION: ${TAILSCALE_VERSION}" >&2
+    exit 1
+fi
+
 dir="$(mktemp -d)"
 pushd .
 cd "${dir}"
@@ -25,10 +43,19 @@ case `uname -m` in
         ;;
 esac
 
-tarball="$(curl 'https://pkgs.tailscale.com/stable/?mode=json' | jq -r .Tarballs.${GOARCH})"
-version="$(echo ${tarball} | cut -d_ -f2)"
+package_url="https://pkgs.tailscale.com/${TAILSCALE_RELEASE_TRACK}"
+if [ -n "${TAILSCALE_VERSION}" ]; then
+    version="${TAILSCALE_VERSION}"
+    tarball="tailscale_${version}_${GOARCH}.tgz"
+else
+    tarball="$(curl -fsSL "${package_url}/?mode=json" | jq -er --arg arch "${GOARCH}" '.Tarballs[$arch] | select(type == "string" and length > 0)')"
+    version="$(echo "${tarball}" | cut -d_ -f2)"
+fi
 
-curl "https://pkgs.tailscale.com/stable/${tarball}" -o tailscale.tgz
+if ! curl -fSL "${package_url}/${tarball}" -o tailscale.tgz; then
+    echo "Failed to download Tailscale ${version} from track ${TAILSCALE_RELEASE_TRACK}. Check that the version exists in this track." >&2
+    exit 1
+fi
 
 tar xzf tailscale.tgz
 
